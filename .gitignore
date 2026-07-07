@@ -1,0 +1,57 @@
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.cache/
+
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+npm-debug.log*
+*.log
+playwright-report/
+test-results/
+*.tmp
+*.bak
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Runtime data and local state must not be published.
+apps/server/data/
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.db
+*.pid
+
+# Secrets and signing material.
+*.jks
+*.keystore
+*.pem
+*.p12
+*.pfx
+*.key
+*.crt
+*.pass
+*.secret
+output/native-build/android-webview/keystore/
+
+# Generated packages, screenshots, caches, SDKs, and nested release repos.
+output/
+
+# Native wrapper generated files.
+apps/native/android-webview/.gradle/
+apps/native/android-webview/app/build/
+apps/native/android-webview/app/src/main/assets/
+apps/native/android-webview/keystore/
+apps/native/android-webview/local.properties
+apps/native/windows-electron/dist/
+apps/native/windows-electron/node_modules/
+apps/native/windows-electron/renderer/

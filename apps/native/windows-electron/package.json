@@ -1,0 +1,40 @@
+{
+    "name":  "yehang-paotuan-desktop",
+    "version":  "0.2.8",
+    "description":  "夜航跑团桌 Windows 客户端",
+    "main":  "main.js",
+    "scripts":  {
+                    "dist":  "electron-builder --win nsis --x64"
+                },
+    "keywords":  [
+
+                 ],
+    "author":  "",
+    "license":  "ISC",
+    "build":  {
+                  "appId":  "com.yehang.paotuan",
+                  "productName":  "夜航跑团桌",
+                  "directories":  {
+                                      "output":  "dist"
+                                  },
+                  "files":  [
+                                "main.js",
+                                "native-runtime.json",
+                                "package.json",
+                                "renderer/**"
+                            ],
+                  "win":  {
+                              "target":  "nsis",
+                              "artifactName":  "yehang-paotuan-windows-v${version}.${ext}"
+                          },
+                  "nsis":  {
+                               "oneClick":  false,
+                               "perMachine":  false,
+                               "allowToChangeInstallationDirectory":  true
+                           }
+              },
+    "devDependencies":  {
+                            "electron":  "^42.1.0",
+                            "electron-builder":  "^26.8.1"
+                        }
+}

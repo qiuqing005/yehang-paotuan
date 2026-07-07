@@ -1,0 +1,28 @@
+{
+	email {$ACME_EMAIL}
+}
+
+{$APP_DOMAIN} {
+	encode zstd gzip
+
+	handle /api/* {
+		reverse_proxy server:8787
+	}
+
+	handle /health {
+		reverse_proxy server:8787
+	}
+
+	handle /socket.io/* {
+		reverse_proxy server:8787
+	}
+
+	handle {
+		reverse_proxy web:8080
+	}
+}
+
+{$VOICE_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy livekit:7880
+}

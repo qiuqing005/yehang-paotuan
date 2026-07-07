@@ -1,0 +1,55 @@
+plugins {
+    id "com.android.application"
+}
+
+def releaseStoreFilePath = System.getenv("PAOTUAN_ANDROID_KEYSTORE")
+def releaseStorePassword = System.getenv("PAOTUAN_ANDROID_KEYSTORE_PASSWORD")
+def releaseKeyAlias = System.getenv("PAOTUAN_ANDROID_KEY_ALIAS")
+def releaseKeyPassword = System.getenv("PAOTUAN_ANDROID_KEY_PASSWORD")
+def hasReleaseSigning = [releaseStoreFilePath, releaseStorePassword, releaseKeyAlias, releaseKeyPassword].every {
+    it != null && it.trim()
+}
+def releaseTaskRequested = gradle.startParameter.taskNames.any {
+    it.toLowerCase(Locale.ROOT).contains("release")
+}
+def allowUnsignedRelease = ((findProperty("paotuan.allowUnsignedRelease") ?: System.getenv("PAOTUAN_ALLOW_UNSIGNED_RELEASE") ?: "false").toString()).toBoolean()
+
+if (releaseTaskRequested && !hasReleaseSigning && !allowUnsignedRelease) {
+    throw new GradleException("Release APK requires PAOTUAN_ANDROID_KEYSTORE, PAOTUAN_ANDROID_KEYSTORE_PASSWORD, PAOTUAN_ANDROID_KEY_ALIAS, and PAOTUAN_ANDROID_KEY_PASSWORD. Set -Ppaotuan.allowUnsignedRelease=true only for local unsigned diagnostics.")
+}
+
+android {
+    namespace "com.yehang.paotuan"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.yehang.paotuan"
+        minSdk 23
+        targetSdk 35
+        versionCode 12
+        versionName "0.2.8"
+    }
+
+    signingConfigs {
+        if (hasReleaseSigning) {
+            release {
+                storeFile file(releaseStoreFilePath)
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.webkit:webkit:1.12.1"
+}

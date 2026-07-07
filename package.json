@@ -1,0 +1,34 @@
+{
+  "name": "trpg-table",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm --workspace apps/server run dev\" \"npm --workspace apps/web run dev\"",
+    "dev:web": "npm --workspace apps/web run dev",
+    "dev:server": "npm --workspace apps/server run dev",
+    "build": "npm --workspace apps/server run build && npm --workspace apps/web run build",
+    "deploy:remote": "powershell -ExecutionPolicy Bypass -File scripts/deploy-remote.ps1",
+    "deploy:web-dist": "powershell -ExecutionPolicy Bypass -File scripts/deploy-web-dist.ps1",
+    "check:cloudmail-local": "powershell -ExecutionPolicy Bypass -File scripts/local-cloudmail-check.ps1",
+    "sync:native-assets": "powershell -ExecutionPolicy Bypass -File scripts/sync-native-assets.ps1",
+    "native:verify-assets": "node scripts/verify-native-assets.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "ui:remote": "node scripts/remote-ui-check.mjs",
+    "ui:failure": "node scripts/flow-failure-check.mjs",
+    "ui:critical-gaps": "node scripts/critical-ui-gaps-check.mjs",
+    "ui:white-screen": "node scripts/white-screen-navigation-check.mjs",
+    "ui:livekit-failure": "node scripts/livekit-chunk-failure-check.mjs",
+    "package:native": "powershell -ExecutionPolicy Bypass -File scripts/package-native-release.ps1",
+    "test": "npm --workspaces --if-present run test",
+    "lint": "npm --workspaces --if-present run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "playwright": "^1.60.0"
+  }
+}

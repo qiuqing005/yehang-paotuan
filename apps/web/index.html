@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="application-name" content="夜航跑团桌" />
+    <meta name="description" content="夜航跑团桌，支持 Android 与 Windows 安装的在线跑团桌面。" />
+    <meta name="theme-color" content="#1b8a7a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="夜航跑团桌" />
+    <meta name="msapplication-TileColor" content="#1b8a7a" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <title>夜航跑团桌</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="/native-config.js"></script>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if (
+        'serviceWorker' in navigator &&
+        location.hostname !== 'appassets.androidplatform.net' &&
+        (location.protocol === 'http:' || location.protocol === 'https:')
+      ) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js').catch(function (error) {
+            console.warn('Service worker registration failed.', error)
+          })
+        })
+      }
+    </script>
+  </body>
+</html>

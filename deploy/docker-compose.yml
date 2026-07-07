@@ -1,0 +1,90 @@
+name: paotuan
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/web.Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ..
+      dockerfile: deploy/server.Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 8787
+      DATA_DIR: /app/data
+      APP_DOMAIN: ${APP_DOMAIN:-}
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+      LIVEKIT_URL: ${LIVEKIT_URL}
+      LIVEKIT_API_URL: ${LIVEKIT_API_URL:-http://livekit:7880}
+      LIVEKIT_API_KEY: ${LIVEKIT_API_KEY}
+      LIVEKIT_API_SECRET: ${LIVEKIT_API_SECRET}
+      VERIFICATION_CODE_SECRET: ${VERIFICATION_CODE_SECRET}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      EMAIL_FROM_NAME: ${EMAIL_FROM_NAME:-夜航跑团桌}
+      SMTP_TIMEOUT_MS: ${SMTP_TIMEOUT_MS:-10000}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      RESEND_FROM: ${RESEND_FROM:-}
+      RESEND_FROM_NAME: ${RESEND_FROM_NAME:-Night Table}
+      CLOUD_MAIL_BASE_URL: ${CLOUD_MAIL_BASE_URL:-}
+      CLOUD_MAIL_EMAIL: ${CLOUD_MAIL_EMAIL:-}
+      CLOUD_MAIL_PASSWORD: ${CLOUD_MAIL_PASSWORD:-}
+      CLOUD_MAIL_TOKEN: ${CLOUD_MAIL_TOKEN:-}
+      CLOUD_MAIL_ACCOUNT_ID: ${CLOUD_MAIL_ACCOUNT_ID:-}
+      CLOUD_MAIL_FROM: ${CLOUD_MAIL_FROM:-}
+      CLOUD_MAIL_FROM_NAME: ${CLOUD_MAIL_FROM_NAME:-夜航跑团桌}
+      CLOUD_MAIL_TIMEOUT_MS: ${CLOUD_MAIL_TIMEOUT_MS:-10000}
+      EMAIL_DELIVERY_MODE: ${EMAIL_DELIVERY_MODE:-}
+      EMAIL_DEBUG_CODE: ${EMAIL_DEBUG_CODE:-false}
+      PAOTUAN_DISABLE_DATA_DIR_LOCK: ${PAOTUAN_DISABLE_DATA_DIR_LOCK:-false}
+    volumes:
+      - server_data:/app/data
+
+  livekit:
+    image: livekit/livekit-server:v1.9
+    restart: unless-stopped
+    command: --config /etc/livekit.yaml
+    volumes:
+      - ./livekit.yaml:/etc/livekit.yaml:ro
+    environment:
+      LIVEKIT_KEYS: "${LIVEKIT_API_KEY}: ${LIVEKIT_API_SECRET}"
+    ports:
+      - "7881:7881/tcp"
+      - "3478:3478/udp"
+      - "49160-49200:49160-49200/udp"
+      - "50000-50100:50000-50100/udp"
+
+  caddy:
+    image: caddy:2.10
+    restart: unless-stopped
+    depends_on:
+      - web
+      - server
+      - livekit
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+      VOICE_DOMAIN: ${VOICE_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+    ports:
+      - "80:80/tcp"
+      - "443:443/tcp"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  server_data:
+  caddy_data:
+  caddy_config:

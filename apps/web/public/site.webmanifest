@@ -1,0 +1,79 @@
+{
+  "id": "/",
+  "name": "夜航跑团桌",
+  "short_name": "跑团桌",
+  "description": "支持 Android 与 Windows 安装的在线跑团桌面。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone"
+  ],
+  "orientation": "any",
+  "background_color": "#f6f7fb",
+  "theme_color": "#1b8a7a",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "进入大厅",
+      "short_name": "大厅",
+      "description": "打开夜航跑团桌大厅。",
+      "url": "/?source=shortcut-open",
+      "icons": [
+        {
+          "src": "/icons/shortcut-open-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "创建跑团",
+      "short_name": "开团",
+      "description": "快速进入创建房间入口。",
+      "url": "/?source=shortcut-start",
+      "icons": [
+        {
+          "src": "/icons/shortcut-start-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "剧本库",
+      "short_name": "剧本",
+      "description": "打开剧本库与编辑器。",
+      "url": "/?source=shortcut-scripts",
+      "icons": [
+        {
+          "src": "/icons/shortcut-resume-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}
